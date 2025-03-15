@@ -107,15 +107,17 @@ class TempControl {
     _beerSensor = sensor;
   }
   bool isDefaultBeerSensor() { return _beerSensor == &defaultBeerSensor; }
+  const TempSensor* getBeerSensor() { return _beerSensor; }
 
   void setFridgeSensor(TempSensor* sensor) {
     Log.verbose(F("BREW: TempControl new fridgeSensor %x" CR), sensor);
     _fridgeSensor = sensor;
   }
   bool isDefaultFridgeSensor() { return _fridgeSensor == &defaultFridgeSensor; }
+  const TempSensor* getFridgeSensor() { return _fridgeSensor; }
 
   // Status methods
-  unsigned char getState() { return _state; }
+  uint8_t getState() { return _state; }
   const char* getStateAsString() {
     switch (_state) {
       case ControllerState::IDLE:
@@ -169,7 +171,8 @@ class TempControl {
     setBeerTemp(doubleToTemp(newTemp));
   }
   void setFridgeTargetTemperature(double newTemp) {
-    Log.info(F("BREW: Setting new fridge target temperature to %F" CR), newTemp);
+    Log.info(F("BREW: Setting new fridge target temperature to %F" CR),
+             newTemp);
 
     setFridgeTemp(doubleToTemp(newTemp));
   }
@@ -181,14 +184,14 @@ class TempControl {
   const MinTimes& getMinTimes() { return _minTimes; }
 
   // Load from disk
-  // void loadSettings();
-  // void loadConstants();
+  void loadSettings();
+  void loadConstants();
 
  private:
-  // void storeSettings();
+  void storeSettings();
   void loadDefaultSettings();
 
-  // void storeConstants();
+  void storeConstants();
   void loadDefaultConstants();
 
   temperature getBeerTemp();
